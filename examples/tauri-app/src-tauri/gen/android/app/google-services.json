@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "866075612503",
+    "project_id": "tauri-push-notifications",
+    "storage_bucket": "tauri-push-notifications.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:866075612503:android:12972c337992503f505a12",
+        "android_client_info": {
+          "package_name": "com.tauri.tauri_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRQUnIeARRDJOyqKgXVxommFHAU3hIHo4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

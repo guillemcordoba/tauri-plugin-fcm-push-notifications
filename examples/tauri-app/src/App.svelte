@@ -1,6 +1,5 @@
 <script>
   import Greet from './lib/Greet.svelte'
-  import { execute } from 'tauri-plugin-push-notifications-api'
 
 	let response = ''
 
@@ -8,9 +7,6 @@
 		response += `[${new Date().toLocaleTimeString()}]` + (typeof returnValue === 'string' ? returnValue : JSON.stringify(returnValue)) + '<br>'
 	}
 
-	function _execute() {
-		execute().then(updateResponse).catch(updateResponse)
-	}
 </script>
 
 <main class="container">
@@ -37,7 +33,6 @@
   </div>
 
   <div>
-    <button on:click="{_execute}">Execute</button>
     <div>{@html response}</div>
   </div>
 
