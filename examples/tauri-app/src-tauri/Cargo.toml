@@ -21,6 +21,7 @@ tauri-build = { version = "2.0.0-alpha.12", features = [] }
 tauri = { version = "2.0.0-alpha.18", features = [] }
 tauri-plugin-push-notifications = { path = "../../../" }
 tauri-plugin-notification = "2.0.0-alpha"
+tao-macros = "0.1.2"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.

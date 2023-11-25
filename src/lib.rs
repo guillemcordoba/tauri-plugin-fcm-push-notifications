@@ -1,3 +1,4 @@
+use tao_macros::android_fn;
 use tauri::{
     plugin::{Builder, TauriPlugin},
     Manager, Runtime,

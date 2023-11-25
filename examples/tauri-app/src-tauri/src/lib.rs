@@ -1,7 +1,27 @@
+use tao_macros::android_fn;
 use tauri::Manager;
 use tauri_plugin_notification::Channel;
 use tauri_plugin_notification::NotificationExt;
 use tauri_plugin_notification::PermissionState;
+use tauri_plugin_push_notifications::PushNotificationsExt;
+
+#[cfg(target_os = "android")]
+android_fn!(
+    studio_darksoil,
+    pushnotifications,
+    PushNotificationsService,
+    runn,
+    []
+);
+
+struct JNIEnv<'a> {
+    _marker: &'a std::marker::PhantomData<()>,
+}
+type JClass<'a> = JNIEnv<'a>;
+fn runn(_env: JNIEnv, _class: JClass) {
+    println!("BEFORERUNING");
+    tauri::async_runtime::spawn(async { run() });
+}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -21,15 +41,16 @@ pub fn run() {
                     .create_channel(Channel::builder("test", "test").build())
                     .expect("Failed to create channel");
                 #[cfg(mobile)]
-                app.listen_global("push-notification-received", move |event| {
-                    println!("notifiactionreceived{event:?}");
-                    h.notification()
-                        .builder()
-                        .channel_id("test")
-                        .title("Hey!")
-                        .show()
-                        .expect("Failed to send notification");
-                });
+                app.push_notifications()
+                    .register_push_notification_handler(move |data| {
+                        println!("notifiactionreceived{data:?}");
+                        h.notification()
+                            .builder()
+                            .channel_id("test")
+                            .title("Hey!")
+                            .show()
+                            .expect("Failed to send notification");
+                    })?;
             }
 
             Ok(())

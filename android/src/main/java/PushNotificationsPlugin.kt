@@ -15,22 +15,23 @@ import com.google.firebase.FirebaseApp
 import com.google.android.gms.tasks.OnCompleteListener
 
 @InvokeArg
-class SetupChannelArgs {
+class RegisterPushNotificationHandlerArgs {
   lateinit var handler: Channel
 }
 
 @TauriPlugin
 class PushNotificationsPlugin(private val activity: Activity): Plugin(activity) {
 
-    @Command
-    fun setupChannel(invoke: Invoke) {
-        val args = invoke.parseArgs(SetupChannelArgs::class.java)
-        PushNotificationsService.channel = args.handler
-        invoke.resolve()
+    companion object {
+        var channel: Channel? = null
     }
 
-    override fun onResume() {
-        Log.e("ONRESUME", "" )
+    @Command
+    fun registerPushNotificationHandler(invoke: Invoke) {
+        Log.w("registerPushNotificationHandler", "")
+        val args = invoke.parseArgs(RegisterPushNotificationHandlerArgs::class.java)
+        PushNotificationsPlugin.channel = args.handler
+        invoke.resolve()
     }
   
     override fun load(webView: WebView) {

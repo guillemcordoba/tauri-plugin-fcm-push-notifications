@@ -7,11 +7,6 @@ import app.tauri.plugin.JSObject
 import app.tauri.plugin.Channel
 
 class PushNotificationsService(): FirebaseMessagingService()  {
-    var n: Int? = null
-
-    companion object {
-        var channel: Channel? = null
-    }
 
     /**
      * Called if InstanceID token is updated. This may occur if the security of
@@ -31,6 +26,13 @@ class PushNotificationsService(): FirebaseMessagingService()  {
         // TODO : send token to tour server
     }
 
+
+    companion object {
+        init {
+            System.loadLibrary("tauri_app_lib")
+        }
+    }
+
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         Log.i("PushNotificationService ", "Message :: $message")
@@ -44,10 +46,21 @@ class PushNotificationsService(): FirebaseMessagingService()  {
         val message = JSObject()
         message.put("data", data)
 
-        if (PushNotificationsService.channel == null) {
-            Log.e("channel is ", "null")
+        var tries = 0;
+
+        if (PushNotificationsPlugin.channel == null){
+            runn()
+
+            while (PushNotificationsPlugin.channel == null && tries < 60) {
+                Thread.sleep(500)  // wait for 1 second
+                tries += 1
+
+                Log.e("channel is ", "null")
+            }
         }
         
-        PushNotificationsService.channel?.send(message)
+        PushNotificationsPlugin.channel?.send(message)
     }
+
+    private external fun runn()
 }
